@@ -9,7 +9,7 @@
 
   <title>
     
-      Scourge and the Sweeps &middot; 
+      Automating Certificate Updates on QNAP with Python &middot; Scourge and the Sweeps
     
   </title>
 
@@ -42,7 +42,7 @@
   </div>
 
   <nav class="sidebar-nav">
-    <a class="sidebar-nav-item active" href="http://localhost:4000/">Home</a>
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
 
     
 
@@ -90,18 +90,10 @@
       </div>
 
       <div class="container content">
-        <div class="posts">
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="http://localhost:4000/automation/python/2023/11/29/Update-QNAP-certs-with-Python/">
-        Automating Certificate Updates on QNAP with Python
-      </a>
-    </h1>
-
-    <span class="post-date">29 Nov 2023</span>
-
-    <h2 id="qnap-and-ssl-ugh-sorta">QNAP and SSL… ugh, sorta.</h2>
+        <div class="post">
+  <h1 class="post-title">Automating Certificate Updates on QNAP with Python</h1>
+  <span class="post-date">29 Nov 2023</span>
+  <h2 id="qnap-and-ssl-ugh-sorta">QNAP and SSL… ugh, sorta.</h2>
 <p>I have a QNAP NAS. It’s an older TS-1677X that I got a great deal on when it was new but is still getting QTS updates (currently QTS 5.1.2) and it’s the primary disk store in my homelab.  A few years back I decided to HTTPS-all-the-things and actually created my own CA and used that for my certificate needs. Well, 24-November-2023 finally arrived and I had a choice: update the CA certs and all the certs issued OR use Let’s Encrypt. I chose Let’s Encrypt to make my life easier and its become the defacto cert provider for a number of homelabers that I folow.</p>
 
 <p>If you hae a QNAP NAS then you know that QTS is not the best way to manage <em>anything</em> and requires multiple steps to get a new cert and/or CA installed. One thing that you will also learn quickly is that 4096 bit or ECDSA certs aren’t exactly supported requiring you to either jump through a conversion hoop or do it via command line. Since I didn’t want to bother converting anything from Let’s Encrypt I opted for command line and Python.</p>
@@ -365,18 +357,9 @@ uca.cert
 
 <p>If you want a complete script and example conf without having to copy and paste, check out my Github repo at <a href="https://github.com/scourgethetracker/devblog">ScourgeTheTracker/devblog</a>.</p>
 
-  </div>
-  
 </div>
 
-<div class="pagination">
-  
-    <span class="pagination-item older">Older</span>
-  
-  
-    <span class="pagination-item newer">Newer</span>
-  
-</div>
+
 
       </div>
     </div>
