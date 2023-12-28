@@ -10,10 +10,12 @@ def create_password_store_entry(entry_name, login_uri, login_username, login_pas
     """
     entry_path = f"imports/{entry_name.replace(' ', '_')}"
     entry_content = [f"{login_password}", f"Username: {login_username}", f"URL: {login_uri}"]
+    
     # Include TOTP only if it's not empty, without the prefix "TOTP: "
     if login_totp:
         entry_content.append(f"{login_totp}")
     entry_data = '\n'.join(entry_content)
+    
     if dry_run:
         # Print the full entry that would have been created
         print(f"--- DRY RUN ---\nEntry Path: {entry_path}\nEntry Content:\n{entry_data}")
