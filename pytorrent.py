@@ -35,7 +35,7 @@ def download_torrent(magnet_link, max_peers):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python download_torrent.py magnet_link")
+        print("Usage: python pytorrent.py magnet_link")
         sys.exit(1)
 
     magnet_link = sys.argv[1]

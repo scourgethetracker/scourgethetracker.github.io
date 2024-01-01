@@ -25,7 +25,7 @@ def send_sms(api_key, phone_number, message):
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print("Usage: python send_sms.py <api_key> <phone_number> <message>")
+        print("Usage: python textbelt.py <api_key> <phone_number> <message>")
         sys.exit(1)
 
     api_key = sys.argv[1]
