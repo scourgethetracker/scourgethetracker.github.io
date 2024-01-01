@@ -7,15 +7,15 @@ import configparser
 
 def read_config():
     config = configparser.ConfigParser()
-    config_path = os.path.expanduser('./.pytorrent.conf')
+    config_path = os.path.expanduser('./pytorrent.conf')
 
     if not os.path.exists(config_path):
         return 50  # Default max peers value if config file doesn't exist
 
     config.read(config_path)
-    max_peers = config.getint('settings', 'max_peers', fallback=50)
+    max_peers = config.getint('settings', 'max_peers', fallback='50')
     download_dir = config('settings', 'download_dir', falback='~/Downloads')
-    method = config('settings', 'method', fallback=prealloc)
+    method = config('settings', 'method', fallback='prealloc')
 
     return max_peers
 
