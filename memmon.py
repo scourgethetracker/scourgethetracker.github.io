@@ -2,7 +2,7 @@
 import configparser
 import paramiko
 
-def load_config(config_file='remote-memmon.conf'):
+def load_config(config_file='memmon.conf'):
     config = configparser.ConfigParser()
     config.read(config_file)
     return config
