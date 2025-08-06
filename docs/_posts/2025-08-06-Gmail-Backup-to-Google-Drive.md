@@ -2,7 +2,10 @@
 layout: post
 title: "Building a Smart Gmail Backup System with Google Apps Script"
 date: 2025-08-06
+img: post-gmailbackup.jpg
+fig-caption: Smart Gmail backup system with cloud, script, and secure laptop
 categories: automation javascript gmail
+tags: automation javascript gmail
 ---
 
 ## Gmail and Backup Anxiety... you know the feeling.
@@ -42,20 +45,20 @@ I started with a simple configuration but quickly realized I needed more sophist
 var CONFIG = {
   // Main backup folder name in Google Drive root
   BACKUP_FOLDER_NAME: 'Gmail Backup',
-  
+
   // Maximum emails to process per execution (to avoid timeout)
   MAX_EMAILS_PER_RUN: 50,
-  
+
   // Default search query - changed to older_than for historical backup
   DEFAULT_SEARCH: 'older_than:30d',
-  
+
   // Historical backup settings
   HISTORICAL_START_DAYS: 365,    // How far back to start (1 year)
   HISTORICAL_BATCH_DAYS: 30,     // Process 30-day chunks at a time
-  
+
   // Enhanced duplicate prevention
   SKIP_DUPLICATES: true,
-  
+
   // File handling
   MAX_ATTACHMENT_SIZE: 25 * 1024 * 1024, // 25MB limit
   SUPPORTED_MIME_TYPES: [
@@ -94,10 +97,10 @@ The key insight was that I needed to work backward through email history systema
 function historicalBackup(olderThanDays, maxEmails) {
   olderThanDays = olderThanDays || 30;
   maxEmails = maxEmails || CONFIG.MAX_EMAILS_PER_RUN;
-  
+
   var searchQuery = 'older_than:' + olderThanDays + 'd';
   logMessage('Starting historical backup for emails older than ' + olderThanDays + ' days', 'INFO');
-  
+
   return backupGmailToDrive(searchQuery, maxEmails);
 }
 ```
@@ -108,7 +111,7 @@ But I didn't stop there. For truly systematic historical backup, I needed date r
 function backupDateRange(olderThanDays, newerThanDays, maxEmails) {
   // Process emails between two specific time points
   var searchQuery = 'older_than:' + olderThanDays + 'd newer_than:' + newerThanDays + 'd';
-  
+
   // This lets me process emails from, say, 90-120 days ago specifically
   return backupGmailToDrive(searchQuery, maxEmails);
 }
@@ -125,7 +128,7 @@ function initializeEmailTracking() {
   try {
     var properties = PropertiesService.getScriptProperties();
     var trackingData = properties.getProperty('processedEmails');
-    
+
     if (trackingData) {
       var parsed = JSON.parse(trackingData);
       logMessage('Loaded tracking data for ' + Object.keys(parsed).length + ' processed emails', 'DEBUG');
@@ -171,23 +174,23 @@ I implemented strict path verification at every level:
 function createDateFolder(parentFolder, date) {
   // Verify we're starting from the correct backup folder
   if (!parentFolder || parentFolder.getName() !== CONFIG.BACKUP_FOLDER_NAME) {
-    throw new Error('Parent folder is not the Gmail Backup folder. Got: ' + 
+    throw new Error('Parent folder is not the Gmail Backup folder. Got: ' +
                     (parentFolder ? parentFolder.getName() : 'null'));
   }
-  
+
   var year = date.getFullYear().toString();
   var month = Utilities.formatDate(date, Session.getScriptTimeZone(), 'MM-MMMM');
   var day = Utilities.formatDate(date, Session.getScriptTimeZone(), 'dd');
-  
+
   // Create verified folder hierarchy
   var yearFolder = getOrCreateFolder(year, parentFolder);
   var monthFolder = getOrCreateFolder(month, yearFolder);
   var dayFolder = getOrCreateFolder(day, monthFolder);
-  
+
   // Log the complete verified path
   var fullPath = CONFIG.BACKUP_FOLDER_NAME + '/' + year + '/' + month + '/' + day;
   logMessage('Created/verified date folder path: ' + fullPath, 'DEBUG');
-  
+
   return dayFolder;
 }
 ```
@@ -201,13 +204,13 @@ function checkForMisplacedBackups() {
   var rootFolder = DriveApp.getRootFolder();
   var allFolders = rootFolder.getFolders();
   var misplacedFolders = [];
-  
+
   while (allFolders.hasNext()) {
     var folder = allFolders.next();
     var folderName = folder.getName();
-    
+
     // Look for timestamp patterns, year folders, etc. that shouldn't be in root
-    if (folderName !== CONFIG.BACKUP_FOLDER_NAME && 
+    if (folderName !== CONFIG.BACKUP_FOLDER_NAME &&
         (folderName.match(/^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}/) ||
          folderName.match(/^\d{4}$/))) {
       misplacedFolders.push({
@@ -217,7 +220,7 @@ function checkForMisplacedBackups() {
       });
     }
   }
-  
+
   return misplacedFolders;
 }
 ```
@@ -230,7 +233,7 @@ The traditional "backup the last X days" approach didn't make sense for historic
 function dailyBackupTrigger() {
   var today = new Date();
   var dayOfMonth = today.getDate();
-  
+
   // Rotate through different historical periods based on day of month
   if (dayOfMonth <= 10) {
     // First 10 days: backup very old emails (1+ years old)
@@ -310,7 +313,7 @@ function createCompleteEmailHtml(metadata, htmlBody) {
       '<span class="labels">' + metadata.labels.join(', ') + '</span>' +
     '</div>' +
     '</div>';
-  
+
   return '<!DOCTYPE html><html><body>' + headerHtml + htmlBody + '</body></html>';
 }
 ```
@@ -322,16 +325,16 @@ After several rounds of "did it work?" manual checking, I built comprehensive mo
 ```javascript
 function runBackupFolderHealthCheck() {
   console.log('=== Gmail Backup Folder Health Check ===');
-  
+
   // Check main backup folder structure
   var structureCheck = verifyBackupFolderStructure();
-  
+
   // Look for misplaced folders
   var misplacedCheck = checkForMisplacedBackups();
-  
+
   // Check tracking statistics
   var trackingStats = getBackupStatistics();
-  
+
   console.log('Main folder exists: ' + (structureCheck.exists ? 'YES' : 'NO'));
   console.log('Email folders backed up: ' + (structureCheck.emailFolders || 0));
   console.log('Misplaced folders: ' + misplacedCheck.misplacedCount);
