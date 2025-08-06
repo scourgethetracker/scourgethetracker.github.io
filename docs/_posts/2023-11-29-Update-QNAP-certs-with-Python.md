@@ -2,11 +2,14 @@
 layout: post
 title: "Automating Certificate Updates on QNAP with Python"
 date: 2023-11-29
+img: post-qnap-python.png
+fig-caption: Automated certificate updates for QNAP using Python
 categories: automation python
+tags: automation python
 ---
 
 ## QNAP and SSL... ugh, sorta.
-I have a QNAP NAS. It's an older TS-1677X that I got a great deal on when it was new but is still getting QTS updates (currently QTS 5.1.2) and it's the primary disk store in my homelab.  A few years back I decided to HTTPS-all-the-things and actually created my own CA and used that for my certificate needs. Well, 24-November-2023 finally arrived and I had a choice: update the CA certs and all the certs issued OR use Let's Encrypt. I chose Let's Encrypt to make my life easier and its become the defacto cert provider for a number of homelabers that I folow. 
+I have a QNAP NAS. It's an older TS-1677X that I got a great deal on when it was new but is still getting QTS updates (currently QTS 5.1.2) and it's the primary disk store in my homelab.  A few years back I decided to HTTPS-all-the-things and actually created my own CA and used that for my certificate needs. Well, 24-November-2023 finally arrived and I had a choice: update the CA certs and all the certs issued OR use Let's Encrypt. I chose Let's Encrypt to make my life easier and its become the defacto cert provider for a number of homelabers that I folow.
 
 If you hae a QNAP NAS then you know that QTS is not the best way to manage *anything* and requires multiple steps to get a new cert and/or CA installed. One thing that you will also learn quickly is that 4096 bit or ECDSA certs aren't exactly supported requiring you to either jump through a conversion hoop or do it via command line. Since I didn't want to bother converting anything from Let's Encrypt I opted for command line and Python.
 
